@@ -228,3 +228,190 @@ myOs = Os.Window
 let a:null = null
 let b:undefined = undefined
 ```
+
+## 3. 인터페이스
+
+```jsx
+let user:object
+
+user = {
+    name: 'xx',
+    age: 30
+}
+
+console.log(user.name) // error 메세지 뜸
+                                           // Property 'name' does not exist on type 'object'.
+```
+
+```jsx
+interface User {
+    name : string;
+    age : number;
+}
+
+let user : User = {
+
+}      // error 메세지 뜸
+             // Type '{}' is missing the following properties from type 'User': name, age
+```
+
+```jsx
+interface User {
+    name : string;
+    age : number;
+}
+
+let user : User = {
+    name: 'xx',
+    age: 30
+}      
+
+console.log(user.age)  // 30
+```
+
+```jsx
+// gender를 option으로 지정해보자
+
+interface User {
+    name : string;
+    age : number;
+    gender? : string;
+}
+
+let user : User = {
+    name: 'xx',
+    age: 30
+}      
+
+user.gender = "male"
+
+console.log(user.age)     // 30
+console.log(user.gender)  // male
+```
+
+```jsx
+// 읽기 전용 property를 만들어보자
+
+interface User {
+    name : string;
+    age : number;
+    gender? : string;
+    readonly birthYear : number;
+}
+
+let user : User = {
+    name: 'xx',
+    age: 30,
+    birthYear : 2000,     // 최초 생성 시만 할당 가능, 이후 수정 불가
+}      
+
+user.birthYear = 1990;  // 읽기 전용 속성이므로 수정 불가
+```
+
+```jsx
+// number를 key로, string을 value로 하는 property 여러 개 받을 수 있음
+
+interface User {
+    name : string;
+    age : number;
+    gender? : string;
+    readonly birthYear : number;
+    [grade:number] : string;
+}
+
+let user : User = {
+    name: 'xx',
+    age: 30,
+    birthYear : 2000,
+    1 : 'A',
+    2 : 'B'
+}
+```
+
+```jsx
+// 위의 경우를 문자열 리터럴로 해보자
+// 위의 경우에 string이라면 무엇이든 입력 가능하지만,
+// 지금은 A, B, C, D 만 입력 가능
+
+type Score = 'A' | 'B' | 'C' | 'F';
+
+interface User {
+    name : string;
+    age : number;
+    gender? : string;
+    readonly birthYear : number;
+    [grade:number] : Score;
+}
+
+let user : User = {
+    name: 'xx',
+    age: 30,
+    birthYear : 2000,
+    1 : 'A',
+    2 : 'B'
+}
+```
+
+---
+
+인터페이스로 함수도 정의할 수 있다.
+
+```jsx
+interface Add {
+    (num1:number, num2:number): number;
+}
+
+const add : Add = function(x, y) {
+    return x + y;
+}
+
+add(10, 20)   // 30
+
+------------------------------------------
+
+interface IsAdult {
+    (age:number):boolean;
+}
+
+const a:IsAdult = (age) => {
+    return age > 19
+}
+
+a(33)     // true
+```
+
+---
+
+인터페이스로 클래스도 정의할 수 있음
+
+```jsx
+// implements
+
+interface Car {
+    color: string;
+    wheels: number;
+    start(): void;
+}
+
+class Bmw implements Car {
+    color;
+    wheels = 4;
+
+    constructor(c:string){
+        this.color = c;
+    }
+
+    start() {
+        console.log('go...')
+    }
+}
+
+const b = new Bmw('green')
+console.log(b)
+// Bmw: {
+//   "wheels": 4,
+//   "color": "green"
+//  }
+
+b.start()   // "go.."
+```
