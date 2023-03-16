@@ -415,3 +415,60 @@ console.log(b)
 
 b.start()   // "go.."
 ```
+
+---
+
+인터페이스는 확장이 가능함
+
+---
+```jsx
+//extends
+
+interface Car {
+    color: string;
+    wheels: number;
+    start(): void;
+}
+
+// Car가 있을 때
+// 이미 Car가 가지고 있던 속성 그대로 가짐
+// 문의 개수나 추가 함수 정의 가능
+interface Benz extends Car {
+    door: number;
+    stop(): void;
+}
+
+const benz : Benz = {
+    door : 5,
+    stop(){
+        console.log('stop')
+    },
+    color : 'black',
+    wheels : 4,
+    start(){
+        console.log('go...')
+    }
+}
+```
+
+---
+
+---
+
+확장은 여러 개 가능
+
+```jsx
+interface Car {
+    color: string;
+    wheels: number;
+    start(): void;
+}
+
+interface Toy {
+    name: string;
+}
+
+interface ToyCar extends Car, Toy {
+    price : number;
+}
+```
